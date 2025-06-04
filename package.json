@@ -1,0 +1,34 @@
+{
+  "name": "seo-blog-generator",
+  "version": "1.0.0",
+  "description": "OpenAI APIを活用した静的HTMLブログ自動生成システム",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx @11ty/eleventy --serve --port=8080",
+    "build": "npx @11ty/eleventy",
+    "dev": "npx @11ty/eleventy --serve --port=8080 --watch"
+  },
+  "keywords": [
+    "blog",
+    "generator",
+    "openai",
+    "seo",
+    "static-site",
+    "eleventy",
+    "quill",
+    "ai"
+  ],
+  "author": "Studio Q",
+  "license": "MIT",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.0",
+    "openai": "^4.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tedueda/seo-blog-generator.git"
+  },
+  "homepage": "https://github.com/tedueda/seo-blog-generator#readme"
+}

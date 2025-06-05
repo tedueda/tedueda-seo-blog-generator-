@@ -3,725 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ブログ記事生成 - スタジオQ</title>
-    <meta name="description" content="OpenAI APIを使用したブログ記事自動生成システム">
+    <title>SEOブログ記事生成 - スタジオQ</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <!-- Quill Editor -->
+    <!-- Quill CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="../style.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="blog-generator.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Studio QのSEO対策済みブログ記事自動生成ツール。OpenAI APIを活用して高品質なコンテンツを作成します。">
+    <meta name="keywords" content="SEO, ブログ, 記事生成, AI, OpenAI, Studio Q">
+    <meta name="author" content="Studio Q">
 </head>
+
 <body>
-    <!-- ヘッダー -->
-    <header>
-        <div class="logo">
-            <h1>スタジオQ</h1>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-logo">
+            <h1>Studio Q Blog Generator</h1>
         </div>
-        <nav>
+        <nav class="header-nav">
             <ul>
-                <li><a href="#home">ホーム</a></li>
-                <li><a href="#about">スタジオについて</a></li>
-                <li><a href="#gallery">ギャラリー</a></li>
-                <li><a href="#contact">お問い合わせ</a></li>
-                <li><a href="#blog">ブログ</a></li>
+                <li><a href="#generator">記事生成</a></li>
+                <li><a href="#preview">プレビュー</a></li>
+                <li><a href="#help">ヘルプ</a></li>
             </ul>
         </nav>
-        <div class="menu-toggle">
-            <i class="fas fa-bars"></i>
+        <div class="header-actions">
+            <button class="btn-secondary">設定</button>
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
-    <main class="blog-generator-main">
-        <div class="container">
-            <div class="generator-header">
-                <h1 class="page-title">AI ブログ記事生成</h1>
-                <p class="page-subtitle">OpenAI APIを使用して高品質なブログ記事を自動生成・編集します</p>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="unified-container">
+            <div class="page-header">
+                <h2>SEOブログ記事生成</h2>
+                <p>AIを活用して高品質なSEO対策済みブログ記事を自動生成します</p>
             </div>
 
-            <!-- 統合フォーム -->
-            <div class="unified-container">
-                <!-- 生成フォーム -->
-                <div class="generator-form-container" id="generator-form-container">
-                    <form id="blog-generator-form" class="generator-form">
-                        <!-- 参考URL -->
-                        <div class="form-group">
-                            <label for="reference-url">
-                                <i class="fas fa-link"></i>
-                                参考URL（オプション）
-                            </label>
-                            <input type="url" id="reference-url" name="referenceUrl" placeholder="https://example.com">
-                            <small class="form-help">参考にしたいWebページのURLを入力してください</small>
-                        </div>
+            <!-- Generator Form Container -->
+            <div id="generator-form-container" class="generator-form-container">
+                <form id="blog-generator-form" class="blog-form">
+                    <!-- Reference URL -->
+                    <div class="form-group">
+                        <label for="reference-url" class="form-label">
+                            参考URL（オプション）
+                        </label>
+                        <input type="url" id="reference-url" class="form-input" placeholder="https://example.com">
+                    </div>
 
-                        <!-- ターゲット層 -->
-                        <div class="form-group">
-                            <label for="target-audience">
-                                <i class="fas fa-users"></i>
-                                ターゲット層 <span class="required">*</span>
-                            </label>
-                            <input type="text" id="target-audience" name="targetAudience" required placeholder="例：映像制作初心者、プロのクリエイター">
-                            <small class="form-help">記事の対象読者を具体的に入力してください</small>
-                        </div>
+                    <!-- Target Audience -->
+                    <div class="form-group">
+                        <label for="target-audience" class="form-label">
+                            ターゲット読者
+                        </label>
+                        <input type="text" id="target-audience" class="form-input" placeholder="例：映像制作初心者、プロのクリエイター">
+                    </div>
 
-                        <!-- メインキーワード -->
-                        <div class="form-group">
-                            <label for="main-keyword">
-                                <i class="fas fa-key"></i>
-                                メインキーワード
-                            </label>
-                            <input type="text" id="main-keyword" name="mainKeyword" placeholder="例：4K映像制作、音響技術、ライブ配信">
-                            <small class="form-help">記事のメインテーマとなるキーワードを入力してください</small>
-                        </div>
+                    <!-- Main Keyword -->
+                    <div class="form-group">
+                        <label for="main-keyword" class="form-label">
+                            メインキーワード <span class="required">*</span>
+                        </label>
+                        <input type="text" id="main-keyword" class="form-input" placeholder="例：ライブ配信" required>
+                    </div>
 
-                        <!-- 文字数選択 -->
-                        <div class="form-group">
-                            <label for="total-length">
-                                <i class="fas fa-text-width"></i>
-                                文字数
-                            </label>
-                            <select id="total-length" name="totalLength">
-                                <option value="1000">1,000文字（短編）</option>
-                                <option value="1500" selected>1,500文字（標準）</option>
-                                <option value="2000">2,000文字（詳細）</option>
-                                <option value="2500">2,500文字（長編）</option>
-                            </select>
-                            <small class="form-help">生成する記事の目安文字数を選択してください</small>
-                        </div>
+                    <!-- Word Count -->
+                    <div class="form-group">
+                        <label for="word-count" class="form-label">
+                            文字数目安
+                        </label>
+                        <select id="word-count" class="form-select">
+                            <option value="1000">1,000文字</option>
+                            <option value="1500">1,500文字</option>
+                            <option value="2000">2,000文字</option>
+                            <option value="3000">3,000文字</option>
+                        </select>
+                    </div>
 
-                        <!-- 画像アップロード -->
-                        <div class="form-group">
-                            <label>
-                                <i class="fas fa-images"></i>
-                                画像アップロード（最大4枚）
-                            </label>
-                            <div class="image-upload-container">
-                                <div class="image-upload-item">
-                                    <input type="file" id="image-1" name="images[]" accept="image/png, image/jpeg" class="image-input">
-                                    <label for="image-1" class="image-upload-label">
-                                        <i class="fas fa-plus"></i>
-                                        <span>画像1</span>
-                                    </label>
-                                    <div class="image-preview" id="preview-1"></div>
+                    <!-- Content Type -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            コンテンツタイプ
+                        </label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="how-to" value="how-to">
+                                <label for="how-to" class="checkbox-label">
+                                    ハウツー記事
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="comparison" value="comparison">
+                                <label for="comparison" class="checkbox-label">
+                                    比較記事
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="review" value="review">
+                                <label for="review" class="checkbox-label">
+                                    レビュー記事
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="news" value="news">
+                                <label for="news" class="checkbox-label">
+                                    ニュース記事
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            記事を生成する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview Container -->
+            <div id="preview-container" class="preview-container" style="display: none;">
+                <form id="preview-form" class="preview-form">
+                    <!-- Title Section -->
+                    <section class="preview-section">
+                        <h3>タイトル</h3>
+                        <div class="input-with-counter">
+                            <input type="text" id="preview-title" class="form-input" placeholder="記事タイトル">
+                            <div id="title-counter" class="char-counter">0/60</div>
+                        </div>
+                    </section>
+
+                    <!-- Excerpt Section -->
+                    <section class="preview-section">
+                        <h3>概要</h3>
+                        <div id="preview-excerpt-editor" class="editor-container"></div>
+                    </section>
+
+                    <!-- Content Section -->
+                    <section class="preview-section">
+                        <h3>本文</h3>
+                        <div class="editor-toolbar">
+                            <button type="button" class="toolbar-btn">見出し</button>
+                            <button type="button" class="toolbar-btn">太字</button>
+                            <button type="button" class="toolbar-btn">リスト</button>
+                        </div>
+                        <div id="preview-content-editor" class="editor-container"></div>
+                        
+                        <!-- Advanced Options -->
+                        <div class="advanced-options">
+                            <details class="collapsible">
+                                <summary class="collapsible-header">
+                                    高度な設定
+                                </summary>
+                                <div class="collapsible-content">
+                                    <button type="button" class="btn-secondary">画像を追加</button>
+                                    <button type="button" class="btn-secondary">リンクを挿入</button>
                                 </div>
-                                <div class="image-upload-item">
-                                    <input type="file" id="image-2" name="images[]" accept="image/png, image/jpeg" class="image-input">
-                                    <label for="image-2" class="image-upload-label">
-                                        <i class="fas fa-plus"></i>
-                                        <span>画像2</span>
-                                    </label>
-                                    <div class="image-preview" id="preview-2"></div>
-                                </div>
-                                <div class="image-upload-item">
-                                    <input type="file" id="image-3" name="images[]" accept="image/png, image/jpeg" class="image-input">
-                                    <label for="image-3" class="image-upload-label">
-                                        <i class="fas fa-plus"></i>
-                                        <span>画像3</span>
-                                    </label>
-                                    <div class="image-preview" id="preview-3"></div>
-                                </div>
-                                <div class="image-upload-item">
-                                    <input type="file" id="image-4" name="images[]" accept="image/png, image/jpeg" class="image-input">
-                                    <label for="image-4" class="image-upload-label">
-                                        <i class="fas fa-plus"></i>
-                                        <span>画像4</span>
-                                    </label>
-                                    <div class="image-preview" id="preview-4"></div>
-                                </div>
-                            </div>
-                            <small class="form-help">PNG または JPEG 形式の画像をアップロードしてください</small>
+                            </details>
                         </div>
+                    </section>
 
-                        <!-- 生成ボタン -->
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary btn-generate">
-                                <i class="fas fa-magic"></i>
-                                記事生成・編集
-                            </button>
+                    <!-- Meta Description Section -->
+                    <section class="preview-section">
+                        <h3>メタディスクリプション</h3>
+                        <div class="input-with-counter">
+                            <textarea id="preview-meta-description" class="form-textarea" placeholder="検索結果に表示される説明文"></textarea>
+                            <div id="description-counter" class="char-counter">0/160</div>
                         </div>
-                    </form>
-                </div>
+                    </section>
 
-                <!-- プレビュー・編集セクション（初期は非表示） -->
-                <div class="preview-container" id="preview-container" style="display: none;">
-                    <form id="preview-form" class="preview-form">
-                        <!-- SEO設定セクション -->
-                        <section class="seo-section">
-                            <h2><i class="fas fa-search"></i> SEO設定</h2>
-                            
-                            <div class="form-group">
-                                <label for="preview-title">SEOタイトル</label>
-                                <input type="text" id="preview-title" name="title" maxlength="60" required>
-                                <div class="char-counter">
-                                    <span id="title-counter">0</span>/60文字
-                                </div>
+                    <!-- SEO Settings -->
+                    <section class="preview-section">
+                        <h3>SEO設定</h3>
+                        <div class="seo-settings">
+                            <div class="seo-item">
+                                <label>キーワード密度</label>
+                                <div class="seo-value">2.5%</div>
                             </div>
-
-                            <div class="form-group">
-                                <label for="preview-meta-description">メタディスクリプション</label>
-                                <textarea id="preview-meta-description" name="metaDescription" maxlength="160" rows="3" required></textarea>
-                                <div class="char-counter">
-                                    <span id="description-counter">0</span>/160文字
-                                </div>
+                            <div class="seo-item">
+                                <label>読みやすさスコア</label>
+                                <div class="seo-value">85/100</div>
                             </div>
-
-                            <!-- JSON-LD構造化データ -->
-                            <div class="form-group">
-                                <details class="json-ld-details">
-                                    <summary>
-                                        <i class="fas fa-code"></i>
-                                        JSON-LD構造化データ
-                                    </summary>
-                                    <textarea id="preview-json-ld" name="jsonLd" rows="15" class="json-editor"></textarea>
-                                    <div class="json-actions">
-                                        <button type="button" class="btn btn-secondary" id="validate-json">
-                                            <i class="fas fa-check"></i>
-                                            JSON検証
-                                        </button>
-                                        <button type="button" class="btn btn-secondary" id="format-json">
-                                            <i class="fas fa-indent"></i>
-                                            フォーマット
-                                        </button>
-                                    </div>
-                                </details>
+                            <div class="seo-item">
+                                <label>SEOスコア</label>
+                                <div class="seo-value">92/100</div>
                             </div>
-                        </section>
-
-                        <!-- 画像管理セクション -->
-                        <section class="images-section" id="images-section">
-                            <h2><i class="fas fa-images"></i> 画像管理</h2>
-                            <div class="uploaded-images" id="uploaded-images">
-                                <!-- アップロード済み画像がここに表示される -->
-                            </div>
-                        </section>
-
-                        <!-- コンテンツ編集セクション -->
-                        <section class="content-section">
-                            <h2><i class="fas fa-edit"></i> コンテンツ編集</h2>
-                            
-                            <!-- セクション1 -->
-                            <div class="content-editor-section">
-                                <h3>Section 1: <span id="heading-1">導入部分</span></h3>
-                                <div id="editor-1" class="quill-editor"></div>
-                            </div>
-
-                            <!-- セクション2 -->
-                            <div class="content-editor-section">
-                                <h3>Section 2: <span id="heading-2">主要コンテンツ</span></h3>
-                                <div id="editor-2" class="quill-editor"></div>
-                            </div>
-
-                            <!-- セクション3 -->
-                            <div class="content-editor-section">
-                                <h3>Section 3: <span id="heading-3">実践的アドバイス</span></h3>
-                                <div id="editor-3" class="quill-editor"></div>
-                            </div>
-
-                            <!-- セクション4 -->
-                            <div class="content-editor-section">
-                                <h3>Section 4: <span id="heading-4">まとめ</span></h3>
-                                <div id="editor-4" class="quill-editor"></div>
-                            </div>
-                        </section>
-
-                        <!-- アクションボタン -->
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="back-button">
-                                <i class="fas fa-arrow-left"></i>
-                                戻る
-                            </button>
-                            <button type="submit" class="btn btn-primary" id="authorize-button">
-                                <i class="fas fa-check"></i>
-                                最終確認
-                            </button>
                         </div>
-                    </form>
-                </div>
+                    </section>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" id="back-button" class="btn-secondary">戻る</button>
+                        <button type="button" id="authorize-button" class="btn-primary">ブログを生成</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
-    <!-- ローディングモーダル -->
+    <!-- Loading Modal -->
     <div id="loading-modal" class="modal">
         <div class="modal-content">
-            <div class="loading-container">
-                <div class="loading-spinner"></div>
-                <h3>記事を生成中です</h3>
-                <p>しばらくお待ちください...</p>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+            <div class="modal-body">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">準備中...</div>
                 </div>
-                <div class="progress-text" id="progress-text">OpenAI APIに接続中...</div>
             </div>
         </div>
     </div>
 
-    <!-- フッター -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <h2>スタジオQ</h2>
-                    <p>写真とクリエイティブのための空間</p>
-                </div>
-                <div class="footer-links">
-                    <h3>リンク</h3>
-                    <ul>
-                        <li><a href="#home">ホーム</a></li>
-                        <li><a href="#about">スタジオについて</a></li>
-                        <li><a href="#gallery">ギャラリー</a></li>
-                        <li><a href="#contact">お問い合わせ</a></li>
-                        <li><a href="#blog">ブログ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h3>お問い合わせ</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 大阪市浪速区恵美須西3-2-4 2F</p>
-                    <p><i class="fas fa-phone"></i> 06-6978-8122</p>
-                    <p><i class="fas fa-envelope"></i> info@studioq.jp</p>
-                </div>
-                <div class="footer-social">
-                    <h3>ソーシャルメディア</h3>
-                    <div class="social-icons">
-                        <a href="https://www.facebook.com/0804studioq" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com/StudioQ080" target="_blank"><i class="fab fa-x-twitter"></i></a>
-                        <a href="https://www.instagram.com/studioq0804" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/channel/UCxnEj084atnqvlbW29DsFKA" target="_blank"><i class="fab fa-youtube"></i></a>
-                    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Studio Q</h4>
+                <p>映像制作とデジタルマーケティングの専門スタジオ</p>
+            </div>
+            <div class="footer-section">
+                <h4>サービス</h4>
+                <ul>
+                    <li><a href="#">映像制作</a></li>
+                    <li><a href="#">ライブ配信</a></li>
+                    <li><a href="#">SEO対策</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>お問い合わせ</h4>
+                <p>Email: info@studioq.jp</p>
+            </div>
+            <div class="footer-section">
+                <h4>フォローする</h4>
+                <div class="social-links">
+                    <a href="#">Twitter</a>
+                    <a href="#">YouTube</a>
+                    <a href="#">Instagram</a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 スタジオQ All Rights Reserved.</p>
-            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Studio Q. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- External JavaScript libraries -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
-    <!-- Inline JavaScript to avoid external file serving issues -->
-    <script>
-        // Blog state management
-        var blogState = {
-            formData: {},
-            generatedContent: null,
-            uploadedImages: [],
-            contentQuill: null,
-            excerptQuill: null
-        };
-
-        // Quill configuration
-        window.quillConfig = {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link'],
-                    ['clean']
-                ]
-            }
-        };
-
-        // Utility functions
-        function generateSlug(title) {
-            return title
-                .toLowerCase()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim('-')
-                .substring(0, 50);
-        }
-
-        function updateCharCounter(counterId, length) {
-            var counter = document.getElementById(counterId);
-            if (counter) {
-                var maxLength = counterId === 'title-counter' ? 60 : 160;
-                counter.textContent = length + '/' + maxLength;
-                
-                if (length > maxLength) {
-                    counter.style.color = '#e74c3c';
-                } else if (length > maxLength * 0.8) {
-                    counter.style.color = '#f39c12';
-                } else {
-                    counter.style.color = '#27ae60';
-                }
-            }
-        }
-
-        function showMessage(message, type) {
-            var messageDiv = document.createElement('div');
-            messageDiv.className = type + '-message';
-            messageDiv.textContent = message;
-            messageDiv.style.cssText = 
-                'position: fixed; top: 20px; right: 20px; ' +
-                'background: ' + (type === 'success' ? '#27ae60' : '#e74c3c') + '; ' +
-                'color: white; padding: 15px 20px; border-radius: 5px; ' +
-                'z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(function() {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 3000);
-        }
-
-        // Modal functions
-        function showLoadingModal() {
-            var modal = document.getElementById('loading-modal');
-            if (modal) {
-                modal.classList.add('active');
-                updateProgress(0, '準備中...');
-            }
-        }
-
-        function hideLoadingModal() {
-            var modal = document.getElementById('loading-modal');
-            if (modal) {
-                modal.classList.remove('active');
-                console.log('Modal hidden');
-            }
-        }
-
-        function updateProgress(percentage, message) {
-            var progressBar = document.querySelector('.progress-fill');
-            var progressText = document.querySelector('.progress-text');
-            
-            if (progressBar) {
-                progressBar.style.width = percentage + '%';
-            }
-            
-            if (progressText) {
-                progressText.textContent = message;
-            }
-        }
-
-        // Content generation functions
-        function createHtmlElement(tagName, content) {
-            var element = document.createElement(tagName);
-            element.textContent = content;
-            return element.outerHTML;
-        }
-
-        function generateMockContent(keyword, options) {
-            return new Promise(function(resolve) {
-                setTimeout(function() {
-                    var contentParts = [];
-                    
-                    contentParts.push(createHtmlElement('h2', keyword + 'とは？基礎知識を理解しよう'));
-                    contentParts.push(createHtmlElement('p', keyword + 'は、現代の映像制作において欠かせない重要な要素です。適切に活用することで、作品のクオリティを大幅に向上させることができます。'));
-                    contentParts.push(createHtmlElement('h2', '実践的な' + keyword + 'の活用方法'));
-                    contentParts.push(createHtmlElement('p', '実際の制作現場では、以下のようなポイントに注意して' + keyword + 'を活用します：'));
-                    
-                    var ul = document.createElement('ul');
-                    var items = ['基本的な設定と調整方法', '効果的な使用タイミング', 'よくある失敗例とその対策'];
-                    items.forEach(function(item) {
-                        var li = document.createElement('li');
-                        li.textContent = item;
-                        ul.appendChild(li);
-                    });
-                    contentParts.push(ul.outerHTML);
-                    
-                    contentParts.push(createHtmlElement('h2', 'プロが教える' + keyword + 'のコツ'));
-                    contentParts.push(createHtmlElement('p', '長年の経験から得られた、' + keyword + 'を効果的に活用するためのコツをご紹介します。これらのテクニックを身につけることで、より高品質な作品制作が可能になります。'));
-                    contentParts.push(createHtmlElement('h2', 'まとめ'));
-                    contentParts.push(createHtmlElement('p', keyword + 'は正しく理解し活用することで、映像制作の可能性を大きく広げてくれます。今回ご紹介したポイントを参考に、ぜひ実際の制作に活かしてみてください。'));
-                    
-                    resolve({
-                        title: keyword + 'の完全ガイド：プロが教える実践的な活用法',
-                        excerpt: keyword + 'について、基礎から応用まで詳しく解説します。実際の現場で使える実践的なテクニックとコツをプロの視点からお伝えします。',
-                        content: contentParts.join(''),
-                        meta_description: keyword + 'の基礎から応用まで、プロの視点から詳しく解説。実践的なテクニックとコツで作品のクオリティを向上させましょう。',
-                        keywords: [keyword, '映像制作', '技術', 'プロ', 'ガイド'],
-                        seo_score: 85
-                    });
-                }, 1000);
-            });
-        }
-
-        function generateContent() {
-            var keyword = blogState.formData.keyword;
-            var options = {
-                category: blogState.formData.category,
-                wordCount: parseInt(blogState.formData.wordCount),
-                targetKeyword: blogState.formData.targetKeyword
-            };
-
-            updateProgress(50, 'コンテンツを生成中...');
-            
-            return new Promise(function(resolve) {
-                setTimeout(function() {
-                    updateProgress(60, 'モックコンテンツを生成中...');
-                    
-                    generateMockContent(keyword, options).then(function(mockContent) {
-                        updateProgress(80, '記事を最適化中...');
-                        
-                        setTimeout(function() {
-                            var optimizedContent = {
-                                title: mockContent.title,
-                                excerpt: mockContent.excerpt,
-                                content: mockContent.content,
-                                meta_description: mockContent.meta_description,
-                                keywords: mockContent.keywords,
-                                seo_score: mockContent.seo_score,
-                                slug: generateSlug(mockContent.title),
-                                date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-                                author: 'スタジオQ'
-                            };
-                            
-                            updateProgress(100, '生成完了！');
-                            
-                            setTimeout(function() {
-                                resolve(optimizedContent);
-                            }, 500);
-                        }, 800);
-                    });
-                }, 1000);
-            });
-        }
-
-        // Form handling functions
-        function validateForm() {
-            var keyword = document.getElementById('main-keyword');
-            if (!keyword || !keyword.value.trim()) {
-                alert('メインキーワードを入力してください。');
-                return false;
-            }
-            return true;
-        }
-
-        function collectFormData() {
-            blogState.formData = {
-                referenceUrl: document.getElementById('reference-url') ? document.getElementById('reference-url').value : '',
-                targetAudience: document.getElementById('target-audience') ? document.getElementById('target-audience').value : '',
-                keyword: document.getElementById('main-keyword') ? document.getElementById('main-keyword').value : '',
-                wordCount: document.getElementById('total-length') ? document.getElementById('total-length').value : '1500',
-                category: '技術情報'
-            };
-        }
-
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            if (!validateForm()) {
-                return;
-            }
-            
-            collectFormData();
-            
-            showLoadingModal();
-            
-            generateContent().then(function(generatedContent) {
-                blogState.generatedContent = generatedContent;
-                showPreviewSection();
-            }).catch(function(error) {
-                console.error('コンテンツ生成エラー:', error);
-                hideLoadingModal();
-                showMessage('コンテンツの生成に失敗しました。もう一度お試しください。', 'error');
-            });
-        }
-
-        // Preview section functions
-        function showPreviewSection() {
-            hideLoadingModal();
-            
-            setTimeout(function() {
-                var formContainer = document.getElementById('generator-form-container');
-                var previewContainer = document.getElementById('preview-container');
-                
-                console.log('Switching to preview section:', {
-                    formContainer: !!formContainer,
-                    previewContainer: !!previewContainer
-                });
-                
-                if (formContainer && previewContainer) {
-                    formContainer.style.display = 'none';
-                    previewContainer.style.display = 'block';
-                    
-                    var pageTitle = document.querySelector('.page-title');
-                    var pageSubtitle = document.querySelector('.page-subtitle');
-                    
-                    if (pageTitle) {
-                        pageTitle.textContent = '記事プレビュー・編集';
-                    }
-                    if (pageSubtitle) {
-                        pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
-                    }
-                    
-                    populatePreviewForm();
-                    initializeQuillEditors();
-                    
-                    previewContainer.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    console.error('Could not find required DOM elements');
-                    showMessage('プレビューセクションの表示に問題が発生しました。', 'error');
-                }
-            }, 200);
-        }
-
-        function goBack() {
-            var formContainer = document.getElementById('generator-form-container');
-            var previewContainer = document.getElementById('preview-container');
-            
-            if (formContainer && previewContainer) {
-                formContainer.style.display = 'block';
-                previewContainer.style.display = 'none';
-                
-                var pageTitle = document.querySelector('.page-title');
-                var pageSubtitle = document.querySelector('.page-subtitle');
-                
-                if (pageTitle) {
-                    pageTitle.textContent = 'AI ブログ記事生成';
-                }
-                if (pageSubtitle) {
-                    pageSubtitle.textContent = 'OpenAI APIを使用して高品質なブログ記事を自動生成・編集します';
-                }
-                
-                formContainer.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function populatePreviewForm() {
-            if (!blogState.generatedContent) return;
-
-            var titleInput = document.getElementById('preview-title');
-            var metaDescInput = document.getElementById('preview-meta-description');
-
-            if (titleInput) {
-                titleInput.value = blogState.generatedContent.title || '';
-                updateCharCounter('title-counter', titleInput.value.length);
-            }
-
-            if (metaDescInput) {
-                metaDescInput.value = blogState.generatedContent.meta_description || '';
-                updateCharCounter('description-counter', metaDescInput.value.length);
-            }
-        }
-
-        function initializeQuillEditors() {
-            if (typeof Quill === 'undefined') {
-                console.error('Quill is not loaded');
-                return;
-            }
-
-            var editor1 = document.getElementById('editor-1');
-            var editor2 = document.getElementById('editor-2');
-            var editor3 = document.getElementById('editor-3');
-            var editor4 = document.getElementById('editor-4');
-
-            if (editor1 && !editor1.classList.contains('ql-container')) {
-                var quill1 = new Quill('#editor-1', window.quillConfig);
-                if (blogState.generatedContent && blogState.generatedContent.content) {
-                    quill1.root.innerHTML = blogState.generatedContent.content;
-                }
-            }
-
-            if (editor2 && !editor2.classList.contains('ql-container')) {
-                var quill2 = new Quill('#editor-2', window.quillConfig);
-            }
-
-            if (editor3 && !editor3.classList.contains('ql-container')) {
-                var quill3 = new Quill('#editor-3', window.quillConfig);
-            }
-
-            if (editor4 && !editor4.classList.contains('ql-container')) {
-                var quill4 = new Quill('#editor-4', window.quillConfig);
-            }
-        }
-
-        function publishBlog() {
-            try {
-                var titleInput = document.getElementById('preview-title');
-                var metaDescInput = document.getElementById('preview-meta-description');
-
-                var blogData = {
-                    title: titleInput ? titleInput.value : blogState.generatedContent.title,
-                    slug: generateSlug(titleInput ? titleInput.value : blogState.generatedContent.title),
-                    date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-                    category: blogState.formData.category || '技術情報',
-                    image: 'default-blog-image.jpg',
-                    excerpt: blogState.generatedContent.excerpt,
-                    content: blogState.generatedContent.content,
-                    author: 'スタジオQ',
-                    meta_description: metaDescInput ? metaDescInput.value : blogState.generatedContent.meta_description,
-                    keywords: blogState.generatedContent.keywords,
-                    seo_score: blogState.generatedContent.seo_score || 75,
-                    uploadedImages: blogState.uploadedImages.filter(function(img) { return img !== null; })
-                };
-                
-                showMessage('ブログ記事が正常に生成されました！', 'success');
-                console.log('Generated blog data:', blogData);
-                
-            } catch (error) {
-                console.error('公開エラー:', error);
-                showMessage('ブログの公開中にエラーが発生しました。', 'error');
-            }
-        }
-
-        // Event binding
-        function bindEvents() {
-            var form = document.getElementById('blog-generator-form');
-            if (form) {
-                form.addEventListener('submit', handleFormSubmit);
-            }
-
-            var backBtn = document.getElementById('back-button');
-            if (backBtn) {
-                backBtn.addEventListener('click', goBack);
-            }
-
-            var authorizeBtn = document.getElementById('authorize-button');
-            if (authorizeBtn) {
-                authorizeBtn.addEventListener('click', publishBlog);
-            }
-
-            var titleInput = document.getElementById('preview-title');
-            if (titleInput) {
-                titleInput.addEventListener('input', function(e) {
-                    updateCharCounter('title-counter', e.target.value.length);
-                });
-            }
-
-            var descInput = document.getElementById('preview-meta-description');
-            if (descInput) {
-                descInput.addEventListener('input', function(e) {
-                    updateCharCounter('description-counter', e.target.value.length);
-                });
-            }
-        }
-
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing blog generator');
-            bindEvents();
-            
-            setTimeout(function() {
-                var titleInput = document.getElementById('preview-title');
-                var descInput = document.getElementById('preview-meta-description');
-                
-                if (titleInput) {
-                    updateCharCounter('title-counter', titleInput.value.length);
-                }
-                
-                if (descInput) {
-                    updateCharCounter('description-counter', descInput.value.length);
-                }
-            }, 100);
-        });
-    </script>
+    <!-- Ultra-Simple JavaScript Implementation -->
+    <script src="simple-blog.js"></script>
 </body>
 </html>

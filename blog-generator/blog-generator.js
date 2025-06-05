@@ -462,10 +462,11 @@ class BlogGeneratorUI {
     }
 
     showPreviewSection() {
-        this.hideLoadingModal();
-        
-        const formContainer = document.getElementById('generator-form-container');
-        const previewContainer = document.getElementById('preview-container');
+        setTimeout(() => {
+            this.hideLoadingModal();
+            
+            const formContainer = document.getElementById('generator-form-container');
+            const previewContainer = document.getElementById('preview-container');
         
         if (formContainer && previewContainer) {
             formContainer.style.display = 'none';
@@ -486,7 +487,8 @@ class BlogGeneratorUI {
             this.displayUploadedImages();
             
             previewContainer.scrollIntoView({ behavior: 'smooth' });
-        }
+            }
+        }, 1500);
     }
 
     initializeCharacterCounters() {

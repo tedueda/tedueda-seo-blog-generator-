@@ -320,6 +320,8 @@ class BlogGeneratorUI {
 
         this.updateProgress(50, 'コンテンツを生成中...');
 
+        let optimizedContent;
+        
         try {
             const response = await fetch('/api/generate-content', {
                 method: 'POST',
@@ -338,10 +340,7 @@ class BlogGeneratorUI {
             }
             
             this.updateProgress(80, '記事を最適化中...');
-            const optimizedContent = this.optimizeContent(result.content);
-            
-            this.updateProgress(100, '生成完了！');
-            return optimizedContent;
+            optimizedContent = this.optimizeContent(result.content);
             
         } catch (error) {
             console.error('OpenAI API error:', error);
@@ -350,11 +349,11 @@ class BlogGeneratorUI {
             const mockContent = await this.generateMockContent(keyword, options);
             
             this.updateProgress(80, '記事を最適化中...');
-            const optimizedContent = this.optimizeContent(mockContent);
-            
-            this.updateProgress(100, '生成完了！');
-            return optimizedContent;
+            optimizedContent = this.optimizeContent(mockContent);
         }
+        
+        this.updateProgress(100, '生成完了！');
+        return optimizedContent;
     }
 
     async generateMockContent(keyword, options) {

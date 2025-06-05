@@ -33,6 +33,11 @@ class BlogGeneratorUI {
             backButton.addEventListener('click', () => this.goBack());
         }
 
+        const authorizeButton = document.getElementById('authorize-button');
+        if (authorizeButton) {
+            authorizeButton.addEventListener('click', (e) => this.handlePreviewSubmit(e));
+        }
+
         const validateJsonBtn = document.getElementById('validate-json');
         const formatJsonBtn = document.getElementById('format-json');
         

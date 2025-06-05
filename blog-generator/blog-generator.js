@@ -12,9 +12,7 @@ class BlogGeneratorUI {
         this.bindEvents();
         this.initializeImageUpload();
         
-        if (window.location.pathname.includes('preview')) {
-            setTimeout(() => this.initializePreviewPage(), 100);
-        }
+        setTimeout(() => this.initializeCharacterCounters(), 100);
     }
 
     bindEvents() {
@@ -217,7 +215,7 @@ class BlogGeneratorUI {
             const generatedContent = await this.generateContent();
             this.generatedContent = generatedContent;
             
-            this.navigateToPreview();
+            this.showPreviewSection();
             
         } catch (error) {
             console.error('コンテンツ生成エラー:', error);
@@ -463,27 +461,42 @@ class BlogGeneratorUI {
         }
     }
 
-    navigateToPreview() {
-        sessionStorage.setItem('blogGeneratorData', JSON.stringify({
-            formData: this.formData,
-            generatedContent: this.generatedContent,
-            uploadedImages: this.uploadedImages
-        }));
+    showPreviewSection() {
+        const formContainer = document.getElementById('generator-form-container');
+        const previewContainer = document.getElementById('preview-container');
         
-        window.location.href = 'preview/';
-    }
-
-    initializePreviewPage() {
-        const savedData = sessionStorage.getItem('blogGeneratorData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            this.formData = data.formData;
-            this.generatedContent = data.generatedContent;
-            this.uploadedImages = data.uploadedImages;
+        if (formContainer && previewContainer) {
+            formContainer.style.display = 'none';
+            previewContainer.style.display = 'block';
+            
+            const pageTitle = document.querySelector('.page-title');
+            const pageSubtitle = document.querySelector('.page-subtitle');
+            
+            if (pageTitle) {
+                pageTitle.textContent = '記事プレビュー・編集';
+            }
+            if (pageSubtitle) {
+                pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
+            }
             
             this.populatePreviewForm();
             this.initializeQuillEditors();
             this.displayUploadedImages();
+            
+            previewContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    initializeCharacterCounters() {
+        const titleInput = document.getElementById('preview-title');
+        const descInput = document.getElementById('preview-meta-description');
+        
+        if (titleInput) {
+            this.updateCharCounter('title-counter', titleInput.value.length);
+        }
+        
+        if (descInput) {
+            this.updateCharCounter('description-counter', descInput.value.length);
         }
     }
 
@@ -748,7 +761,25 @@ class BlogGeneratorUI {
     }
 
     goBack() {
-        window.location.href = '../blog-generator/';
+        const formContainer = document.getElementById('generator-form-container');
+        const previewContainer = document.getElementById('preview-container');
+        
+        if (formContainer && previewContainer) {
+            formContainer.style.display = 'block';
+            previewContainer.style.display = 'none';
+            
+            const pageTitle = document.querySelector('.page-title');
+            const pageSubtitle = document.querySelector('.page-subtitle');
+            
+            if (pageTitle) {
+                pageTitle.textContent = 'AI ブログ記事生成';
+            }
+            if (pageSubtitle) {
+                pageSubtitle.textContent = 'OpenAI APIを使用して高品質なブログ記事を自動生成・編集します';
+            }
+            
+            formContainer.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
     showImageError(message) {

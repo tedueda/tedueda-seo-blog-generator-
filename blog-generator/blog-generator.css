@@ -51,14 +51,18 @@
 }
 
 /* フォームコンテナ */
-.generator-form-container,
-.preview-container {
+.unified-container {
     max-width: 800px;
     margin: 0 auto;
+}
+
+.generator-form-container,
+.preview-container {
     background: var(--ui-base);
     border-radius: var(--ui-radius);
     box-shadow: var(--ui-shadow);
     padding: 40px;
+    margin-bottom: 20px;
 }
 
 /* フォームグループ */

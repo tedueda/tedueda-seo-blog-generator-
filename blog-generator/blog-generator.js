@@ -252,7 +252,7 @@ class BlogGeneratorUI {
             referenceUrl: document.getElementById('reference-url').value.trim(),
             targetAudience: document.getElementById('target-audience').value.trim(),
             mainKeyword: document.getElementById('main-keyword').value.trim(),
-            totalLength: document.getElementById('total-length').value,
+            totalLength: document.getElementById('word-count').value,
             images: this.uploadedImages.filter(img => img !== null)
         };
     }
@@ -404,7 +404,10 @@ class BlogGeneratorUI {
                 this.updateProgress(80, '記事を最適化中...');
                 optimizedContent = this.optimizeContent(result.content);
             } else {
-                throw new Error('Production environment - using mock content');
+                this.updateProgress(60, 'モックコンテンツを生成中...');
+                const mockContent = await this.generateMockContent(keyword, options);
+                this.updateProgress(80, '記事を最適化中...');
+                optimizedContent = this.optimizeContent(mockContent);
             }
         } catch (error) {
             console.error('OpenAI API error:', error);

@@ -524,31 +524,53 @@ class BlogGeneratorUI {
     showPreviewSection() {
         this.hideLoadingModal();
         
-        setTimeout(() => {
-            const formContainer = document.getElementById('generator-form-container');
-            const previewContainer = document.getElementById('preview-container');
+        const waitForElements = () => {
+            return new Promise((resolve) => {
+                const checkElements = () => {
+                    const formContainer = document.getElementById('generator-form-container');
+                    const previewContainer = document.getElementById('preview-container');
+                    
+                    console.log('Checking DOM elements:', {
+                        formContainer: !!formContainer,
+                        previewContainer: !!previewContainer,
+                        documentReady: document.readyState
+                    });
+                    
+                    if (formContainer && previewContainer) {
+                        resolve({ formContainer, previewContainer });
+                    } else {
+                        setTimeout(checkElements, 100);
+                    }
+                };
+                checkElements();
+            });
+        };
         
-            if (formContainer && previewContainer) {
-                formContainer.style.display = 'none';
-                previewContainer.style.display = 'block';
-                
-                const pageTitle = document.querySelector('.page-title');
-                const pageSubtitle = document.querySelector('.page-subtitle');
-                
-                if (pageTitle) {
-                    pageTitle.textContent = '記事プレビュー・編集';
-                }
-                if (pageSubtitle) {
-                    pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
-                }
-                
-                this.populatePreviewForm();
-                this.initializeQuillEditors();
-                this.displayUploadedImages();
-                
-                previewContainer.scrollIntoView({ behavior: 'smooth' });
+        waitForElements().then(({ formContainer, previewContainer }) => {
+            console.log('DOM elements found, transitioning to preview section');
+            
+            formContainer.style.display = 'none';
+            previewContainer.style.display = 'block';
+            
+            const pageTitle = document.querySelector('.page-title');
+            const pageSubtitle = document.querySelector('.page-subtitle');
+            
+            if (pageTitle) {
+                pageTitle.textContent = '記事プレビュー・編集';
             }
-        }, 500); // Reduced delay for better user experience
+            if (pageSubtitle) {
+                pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
+            }
+            
+            this.populatePreviewForm();
+            this.initializeQuillEditors();
+            this.displayUploadedImages();
+            
+            previewContainer.scrollIntoView({ behavior: 'smooth' });
+        }).catch((error) => {
+            console.error('Failed to find DOM elements for preview section:', error);
+            alert('プレビューセクションの表示に問題が発生しました。ページを再読み込みしてください。');
+        });
     }
 
     initializeCharacterCounters() {

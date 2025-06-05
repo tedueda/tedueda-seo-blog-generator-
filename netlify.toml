@@ -1,0 +1,25 @@
+[build]
+  publish = "_site"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# メインページへのリダイレクト
+[[redirects]]
+  from = "/"
+  to = "/blog-generator/index.html"
+  status = 301
+
+# 404エラーの場合のフォールバック
+[[redirects]]
+  from = "/*"
+  to = "/blog-generator/index.html"
+  status = 200
+
+[dev]
+  framework = "eleventy"
+  command = "npm run dev"
+  targetPort = 8080
+  port = 8888
+  publish = "_site"

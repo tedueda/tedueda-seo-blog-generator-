@@ -323,25 +323,42 @@ class BlogGeneratorUI {
         let optimizedContent;
         
         try {
-            const response = await fetch('/api/generate-content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ keyword, options })
-            });
+            const openaiApiKey = window.OPENAI_API_KEY || '';
             
-            if (!response.ok) {
-                throw new Error(`API call failed: ${response.status}`);
+            if (openaiApiKey && window.location.hostname === 'localhost') {
+                this.updateProgress(60, 'OpenAI APIに直接接続中...');
+                
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${openaiApiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: window.OPENAI_MODEL || 'gpt-4',
+                        messages: [
+                            {
+                                role: "system",
+                                content: "あなたは専門的なブログライターです。高品質で読みやすく、SEOに最適化された記事を作成します。"
+                            },
+                            {
+                                role: "user",
+                                content: this.buildPrompt(keyword, options)
+                            }
+                        ]
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API call failed: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                this.updateProgress(80, '記事を最適化中...');
+                optimizedContent = this.optimizeContent(result.content);
+            } else {
+                throw new Error('Production environment - using mock content');
             }
-            
-            const result = await response.json();
-            
-            if (!result.success) {
-                throw new Error(result.error || 'Content generation failed');
-            }
-            
-            this.updateProgress(80, '記事を最適化中...');
-            optimizedContent = this.optimizeContent(result.content);
-            
         } catch (error) {
             console.error('OpenAI API error:', error);
             this.updateProgress(60, 'APIエラー - モックコンテンツを生成中...');
@@ -353,6 +370,9 @@ class BlogGeneratorUI {
         }
         
         this.updateProgress(100, '生成完了！');
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         return optimizedContent;
     }
 
@@ -386,6 +406,46 @@ class BlogGeneratorUI {
                 });
             }, 2000);
         });
+    }
+
+    buildPrompt(keyword, options = {}) {
+        const category = options.category || '技術情報';
+        const siteName = 'スタジオQ';
+        
+        return `あなたは${siteName}の専門的なブログライターです。以下の要件に従って、高品質なブログ記事を作成してください。
+
+【記事要件】
+- キーワード: ${keyword}
+- カテゴリー: ${category}
+- 対象読者: 映像制作・音響技術に興味のあるクリエイター
+- 文字数: 1500-2000文字
+- 文体: 専門的だが親しみやすい
+
+【記事構成】
+1. 導入部分（問題提起・興味を引く内容）
+2. 主要コンテンツ（3-4つのセクション）
+3. 実践的なアドバイス・具体例
+4. まとめ（行動を促す内容）
+
+【SEO要件】
+- キーワードを自然に含める（密度2-3%）
+- 見出しにキーワードを含める
+- 読みやすい段落構成
+- 専門用語の適切な説明
+
+【出力形式】
+以下のJSON形式で出力してください：
+
+{
+  "title": "魅力的なタイトル（キーワードを含む）",
+  "excerpt": "記事の概要（150文字以内）",
+  "content": "HTML形式の記事本文（h2, h3, p, ul, li, strongタグを使用）",
+  "meta_description": "SEO用メタディスクリプション（160文字以内）",
+  "keywords": ["キーワード1", "キーワード2", "キーワード3"],
+  "seo_score": 85
+}
+
+記事を作成してください。`;
     }
 
     optimizeContent(content) {
@@ -444,6 +504,7 @@ class BlogGeneratorUI {
         const modal = document.getElementById('loading-modal');
         if (modal) {
             modal.classList.remove('active');
+            console.log('Modal hidden'); // Debug log
         }
     }
 
@@ -461,33 +522,33 @@ class BlogGeneratorUI {
     }
 
     showPreviewSection() {
+        this.hideLoadingModal();
+        
         setTimeout(() => {
-            this.hideLoadingModal();
-            
             const formContainer = document.getElementById('generator-form-container');
             const previewContainer = document.getElementById('preview-container');
         
-        if (formContainer && previewContainer) {
-            formContainer.style.display = 'none';
-            previewContainer.style.display = 'block';
-            
-            const pageTitle = document.querySelector('.page-title');
-            const pageSubtitle = document.querySelector('.page-subtitle');
-            
-            if (pageTitle) {
-                pageTitle.textContent = '記事プレビュー・編集';
+            if (formContainer && previewContainer) {
+                formContainer.style.display = 'none';
+                previewContainer.style.display = 'block';
+                
+                const pageTitle = document.querySelector('.page-title');
+                const pageSubtitle = document.querySelector('.page-subtitle');
+                
+                if (pageTitle) {
+                    pageTitle.textContent = '記事プレビュー・編集';
+                }
+                if (pageSubtitle) {
+                    pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
+                }
+                
+                this.populatePreviewForm();
+                this.initializeQuillEditors();
+                this.displayUploadedImages();
+                
+                previewContainer.scrollIntoView({ behavior: 'smooth' });
             }
-            if (pageSubtitle) {
-                pageSubtitle.textContent = '生成された記事を確認し、必要に応じて編集してください';
-            }
-            
-            this.populatePreviewForm();
-            this.initializeQuillEditors();
-            this.displayUploadedImages();
-            
-            previewContainer.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 1500);
+        }, 500); // Reduced delay for better user experience
     }
 
     initializeCharacterCounters() {

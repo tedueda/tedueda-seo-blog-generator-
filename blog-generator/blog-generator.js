@@ -17,7 +17,9 @@ class BlogGeneratorUI {
 
     bindEvents() {
         const generateForm = document.getElementById('blog-generator-form');
+        console.log('bindEvents: generateForm found:', !!generateForm);
         if (generateForm) {
+            console.log('bindEvents: Adding submit event listener');
             generateForm.addEventListener('submit', (e) => this.handleFormSubmit(e));
         }
 
@@ -213,13 +215,17 @@ class BlogGeneratorUI {
     }
 
     async handleFormSubmit(event) {
+        console.log('handleFormSubmit called!', event);
         event.preventDefault();
         
         if (!this.validateForm()) {
+            console.log('Form validation failed');
             return;
         }
 
+        console.log('Form validation passed, collecting data...');
         this.collectFormData();
+        console.log('Form data collected:', this.formData);
         this.showLoadingModal();
         
         try {
@@ -236,11 +242,11 @@ class BlogGeneratorUI {
     }
 
     validateForm() {
-        const targetAudience = document.getElementById('target-audience').value.trim();
+        const mainKeyword = document.getElementById('main-keyword').value.trim();
         
-        if (!targetAudience) {
-            alert('ターゲット層は必須項目です。');
-            document.getElementById('target-audience').focus();
+        if (!mainKeyword) {
+            alert('メインキーワードは必須項目です。');
+            document.getElementById('main-keyword').focus();
             return false;
         }
 
@@ -1029,3 +1035,9 @@ class BlogGeneratorUI {
         }, 3000);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Blog Generator UI initialized');
+    const blogGenerator = new BlogGeneratorUI();
+    blogGenerator.init();
+});

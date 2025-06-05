@@ -22,10 +22,10 @@
   "license": "MIT",
   "dependencies": {
     "@11ty/eleventy": "^3.1.0",
-    "openai": "^4.0.0",
-    "dotenv": "^16.0.0"
+    "@11ty/eleventy-img": "^6.0.4",
+    "dotenv": "^16.0.0",
+    "openai": "^4.0.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/tedueda/seo-blog-generator.git"

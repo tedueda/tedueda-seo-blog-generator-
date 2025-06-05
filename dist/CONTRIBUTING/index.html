@@ -1,0 +1,63 @@
+<h1>Contributing to SEO Blog Generator</h1>
+<h2>開発環境のセットアップ</h2>
+<ol>
+<li>Node.js (v18以上) をインストール</li>
+<li>リポジトリをクローン</li>
+<li>依存関係をインストール: <code>npm install</code></li>
+<li>環境変数を設定: <code>.env.example</code> を <code>.env</code> にコピーして編集</li>
+<li>開発サーバーを起動: <code>npm start</code></li>
+</ol>
+<h2>開発ワークフロー</h2>
+<h3>ブランチ戦略</h3>
+<ul>
+<li><code>main</code>: 本番環境用の安定版</li>
+<li><code>develop</code>: 開発用ブランチ</li>
+<li><code>feature/*</code>: 新機能開発用ブランチ</li>
+</ul>
+<h3>コミットメッセージ</h3>
+<pre><code>feat: 新機能追加
+fix: バグ修正
+docs: ドキュメント更新
+style: コードスタイル修正
+refactor: リファクタリング
+test: テスト追加・修正
+</code></pre>
+<h2>ファイル構成</h2>
+<pre><code>seo-blog-generator/
+├── blog-generator/          # フロントエンドUI
+│   ├── index.html          # メインフォーム
+│   ├── preview.html        # 編集インターフェース
+│   ├── blog-generator.js   # メイン処理ロジック
+│   ├── quill-config.js     # Quillエディタ設定
+│   └── api/
+│       └── generate-content.js # OpenAI API統合
+├── blog-automation/         # バックエンド処理
+│   ├── openai-integration.js   # OpenAI統合モジュール
+│   └── templates/              # HTMLテンプレート
+├── .eleventy.js            # Eleventyビルド設定
+└── package.json
+</code></pre>
+<h2>テスト</h2>
+<pre><code class="language-bash"># 開発サーバーでテスト
+npm start
+
+# ビルドテスト
+npm run build
+</code></pre>
+<h2>プルリクエスト</h2>
+<ol>
+<li>機能ブランチを作成</li>
+<li>変更を実装</li>
+<li>テストを実行</li>
+<li>プルリクエストを作成</li>
+<li>レビューを受ける</li>
+</ol>
+<h2>問題報告</h2>
+<p>GitHubのIssuesで問題を報告してください：</p>
+<ul>
+<li>バグの詳細な説明</li>
+<li>再現手順</li>
+<li>期待される動作</li>
+<li>実際の動作</li>
+<li>環境情報（OS、ブラウザ等）</li>
+</ul>

@@ -1,5 +1,5 @@
 const path = require('path');
-const OpenAIBlogGenerator = require('../../blog/blog-automation/openai-integration.js');
+const OpenAIBlogGenerator = require('../../blog-automation/openai-integration.js');
 
 module.exports = async (req, res) => {
     if (req.method !== 'POST') {

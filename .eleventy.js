@@ -33,6 +33,7 @@ module.exports = function(eleventyConfig) {
   // パススルーコピー
   eleventyConfig.addPassthroughCopy("blog/**/*.html");
   eleventyConfig.addPassthroughCopy("blog/images");
+  eleventyConfig.addPassthroughCopy("blog-automation/**/*.js");
   
   return {
     dir: {

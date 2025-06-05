@@ -26,13 +26,12 @@ function generateContent() {
             setTimeout(function() {
                 updateProgress(100, '完了！');
                 var keyword = document.getElementById('main-keyword').value || 'ライブ配信';
-                var h2_1 = document.createElement('h2');
-                h2_1.textContent = keyword + 'とは';
-                var p_1 = document.createElement('p');
-                p_1.textContent = keyword + 'について詳しく解説します。';
+                var h2Text = keyword + 'とは';
+                var pText = keyword + 'について詳しく解説します。';
+                var contentHtml = '<h2>' + h2Text + '</h2><p>' + pText + '</p>';
                 resolve({
                     title: keyword + 'の完全ガイド',
-                    content: h2_1.outerHTML + p_1.outerHTML,
+                    content: contentHtml,
                     excerpt: keyword + 'の基礎から応用まで解説',
                     meta_description: keyword + 'について詳しく解説します'
                 });

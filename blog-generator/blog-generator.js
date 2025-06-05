@@ -168,12 +168,23 @@ class BlogGeneratorUI {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="プレビュー ${imageNumber}">
-                <button type="button" class="remove-image" onclick="blogGenerator.removeImage(${imageNumber})">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
+            preview.innerHTML = '';
+            
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = 'プレビュー ' + imageNumber;
+            
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'remove-image';
+            button.onclick = () => this.removeImage(imageNumber);
+            
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-times';
+            button.appendChild(icon);
+            
+            preview.appendChild(img);
+            preview.appendChild(button);
             preview.classList.add('active');
             if (label) {
                 label.style.display = 'none';
@@ -252,21 +263,37 @@ class BlogGeneratorUI {
             modal = document.createElement('div');
             modal.id = 'image-error-modal';
             modal.className = 'modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-exclamation-triangle"></i> 画像アップロードエラー</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p id="image-error-message"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="this.closest('.modal').classList.remove('active')">
-                            OK
-                        </button>
-                    </div>
-                </div>
-            `;
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+            
+            const modalHeader = document.createElement('div');
+            modalHeader.className = 'modal-header';
+            const headerTitle = document.createElement('h3');
+            const headerIcon = document.createElement('i');
+            headerIcon.className = 'fas fa-exclamation-triangle';
+            headerTitle.appendChild(headerIcon);
+            headerTitle.appendChild(document.createTextNode(' 画像アップロードエラー'));
+            modalHeader.appendChild(headerTitle);
+            
+            const modalBody = document.createElement('div');
+            modalBody.className = 'modal-body';
+            const errorMessage = document.createElement('p');
+            errorMessage.id = 'image-error-message';
+            modalBody.appendChild(errorMessage);
+            
+            const modalFooter = document.createElement('div');
+            modalFooter.className = 'modal-footer';
+            const okButton = document.createElement('button');
+            okButton.type = 'button';
+            okButton.className = 'btn btn-primary';
+            okButton.textContent = 'OK';
+            okButton.onclick = () => modal.classList.remove('active');
+            modalFooter.appendChild(okButton);
+            
+            modalContent.appendChild(modalHeader);
+            modalContent.appendChild(modalBody);
+            modalContent.appendChild(modalFooter);
+            modal.appendChild(modalContent);
             document.body.appendChild(modal);
         }
         
@@ -276,12 +303,20 @@ class BlogGeneratorUI {
 
     showImageProcessing(imageNumber, message) {
         const preview = document.getElementById(`preview-${imageNumber}`);
-        preview.innerHTML = `
-            <div class="processing-indicator">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>${message}</p>
-            </div>
-        `;
+        preview.innerHTML = '';
+        
+        const processingDiv = document.createElement('div');
+        processingDiv.className = 'processing-indicator';
+        
+        const spinner = document.createElement('i');
+        spinner.className = 'fas fa-spinner fa-spin';
+        
+        const messageP = document.createElement('p');
+        messageP.textContent = message;
+        
+        processingDiv.appendChild(spinner);
+        processingDiv.appendChild(messageP);
+        preview.appendChild(processingDiv);
         preview.classList.add('active');
     }
 
@@ -292,10 +327,14 @@ class BlogGeneratorUI {
         const preview = document.getElementById(`preview-${imageNumber}`);
         const successMessage = document.createElement('div');
         successMessage.className = 'compression-success';
-        successMessage.innerHTML = `
-            <i class="fas fa-check-circle"></i>
-            <p>圧縮完了: ${originalMB}MB → ${compressedMB}MB (${compressionRatio}%削減)</p>
-        `;
+        const checkIcon = document.createElement('i');
+        checkIcon.className = 'fas fa-check-circle';
+        
+        const messageP = document.createElement('p');
+        messageP.textContent = `圧縮完了: ${originalMB}MB → ${compressedMB}MB (${compressionRatio}%削減)`;
+        
+        successMessage.appendChild(checkIcon);
+        successMessage.appendChild(messageP);
         
         preview.appendChild(successMessage);
         
@@ -391,19 +430,7 @@ class BlogGeneratorUI {
                 resolve({
                     title: `${keyword}の完全ガイド - プロが教える実践的テクニック`,
                     excerpt: `${keyword}について、${options.targetAudience}向けに詳しく解説します。実践的なアドバイスと具体例を交えて、わかりやすくお伝えします。`,
-                    content: `
-                        <h2>はじめに</h2>
-                        <p>${keyword}は現代の映像制作において重要な技術です。この記事では、${options.targetAudience}の皆様に向けて、実践的な内容をお届けします。</p>
-                        
-                        <h2>基本的な概念</h2>
-                        <p>${keyword}の基本的な概念について説明します。まず理解しておくべき重要なポイントを整理しましょう。</p>
-                        
-                        <h2>実践的なテクニック</h2>
-                        <p>実際の制作現場で使える具体的なテクニックをご紹介します。これらの方法を活用することで、より効率的な作業が可能になります。</p>
-                        
-                        <h2>まとめ</h2>
-                        <p>${keyword}について解説してきました。今回ご紹介した内容を参考に、ぜひ実際の制作に活用してください。</p>
-                    `,
+                    content: this.buildMockContentHtml(keyword, options),
                     meta_description: `${keyword}について${options.targetAudience}向けに詳しく解説。実践的なテクニックと具体例を交えてわかりやすくお伝えします。`,
                     keywords: [keyword, '映像制作', '技術情報', 'スタジオQ'],
                     seo_score: 85,
@@ -414,6 +441,22 @@ class BlogGeneratorUI {
                 });
             }, 2000);
         });
+    }
+
+    buildMockContentHtml(keyword, options) {
+        const h2_1 = String.fromCharCode(60) + 'h2' + String.fromCharCode(62) + 'はじめに' + String.fromCharCode(60) + '/h2' + String.fromCharCode(62);
+        const p1 = String.fromCharCode(60) + 'p' + String.fromCharCode(62) + keyword + 'は現代の映像制作において重要な技術です。この記事では、' + (options.targetAudience || 'クリエイター') + 'の皆様に向けて、実践的な内容をお届けします。' + String.fromCharCode(60) + '/p' + String.fromCharCode(62);
+        
+        const h2_2 = String.fromCharCode(60) + 'h2' + String.fromCharCode(62) + '基本的な概念' + String.fromCharCode(60) + '/h2' + String.fromCharCode(62);
+        const p2 = String.fromCharCode(60) + 'p' + String.fromCharCode(62) + keyword + 'の基本的な概念について説明します。まず理解しておくべき重要なポイントを整理しましょう。' + String.fromCharCode(60) + '/p' + String.fromCharCode(62);
+        
+        const h2_3 = String.fromCharCode(60) + 'h2' + String.fromCharCode(62) + '実践的なテクニック' + String.fromCharCode(60) + '/h2' + String.fromCharCode(62);
+        const p3 = String.fromCharCode(60) + 'p' + String.fromCharCode(62) + '実際の制作現場で使える具体的なテクニックをご紹介します。これらの方法を活用することで、より効率的な作業が可能になります。' + String.fromCharCode(60) + '/p' + String.fromCharCode(62);
+        
+        const h2_4 = String.fromCharCode(60) + 'h2' + String.fromCharCode(62) + 'まとめ' + String.fromCharCode(60) + '/h2' + String.fromCharCode(62);
+        const p4 = String.fromCharCode(60) + 'p' + String.fromCharCode(62) + keyword + 'について解説してきました。今回ご紹介した内容を参考に、ぜひ実際の制作に活用してください。' + String.fromCharCode(60) + '/p' + String.fromCharCode(62);
+        
+        return h2_1 + p1 + h2_2 + p2 + h2_3 + p3 + h2_4 + p4;
     }
 
     buildPrompt(keyword, options = {}) {
@@ -666,18 +709,37 @@ class BlogGeneratorUI {
             if (image) {
                 const imageItem = document.createElement('div');
                 imageItem.className = 'uploaded-image-item';
-                imageItem.innerHTML = `
-                    <img src="${image.dataUrl}" alt="${image.name}">
-                    <div class="image-info">
-                        <div class="image-name">${image.name}</div>
-                        <div class="image-actions">
-                            <button type="button" class="btn btn-secondary" onclick="blogGenerator.removeUploadedImage(${index})">
-                                <i class="fas fa-trash"></i>
-                                削除
-                            </button>
-                        </div>
-                    </div>
-                `;
+                const img = document.createElement('img');
+                img.src = image.dataUrl;
+                img.alt = image.name;
+                
+                const imageInfo = document.createElement('div');
+                imageInfo.className = 'image-info';
+                
+                const imageName = document.createElement('div');
+                imageName.className = 'image-name';
+                imageName.textContent = image.name;
+                
+                const imageActions = document.createElement('div');
+                imageActions.className = 'image-actions';
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'btn btn-secondary';
+                deleteButton.onclick = () => this.removeUploadedImage(index);
+                
+                const deleteIcon = document.createElement('i');
+                deleteIcon.className = 'fas fa-trash';
+                
+                deleteButton.appendChild(deleteIcon);
+                deleteButton.appendChild(document.createTextNode(' 削除'));
+                
+                imageActions.appendChild(deleteButton);
+                imageInfo.appendChild(imageName);
+                imageInfo.appendChild(imageActions);
+                
+                imageItem.appendChild(img);
+                imageItem.appendChild(imageInfo);
                 imagesContainer.appendChild(imageItem);
             }
         });
@@ -882,21 +944,37 @@ class BlogGeneratorUI {
             modal = document.createElement('div');
             modal.id = 'image-error-modal';
             modal.className = 'modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-exclamation-triangle"></i> 画像アップロードエラー</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p id="image-error-message"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="this.closest('.modal').classList.remove('active')">
-                            OK
-                        </button>
-                    </div>
-                </div>
-            `;
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+            
+            const modalHeader = document.createElement('div');
+            modalHeader.className = 'modal-header';
+            const headerTitle = document.createElement('h3');
+            const headerIcon = document.createElement('i');
+            headerIcon.className = 'fas fa-exclamation-triangle';
+            headerTitle.appendChild(headerIcon);
+            headerTitle.appendChild(document.createTextNode(' 画像アップロードエラー'));
+            modalHeader.appendChild(headerTitle);
+            
+            const modalBody = document.createElement('div');
+            modalBody.className = 'modal-body';
+            const errorMessage = document.createElement('p');
+            errorMessage.id = 'image-error-message';
+            modalBody.appendChild(errorMessage);
+            
+            const modalFooter = document.createElement('div');
+            modalFooter.className = 'modal-footer';
+            const okButton = document.createElement('button');
+            okButton.type = 'button';
+            okButton.className = 'btn btn-primary';
+            okButton.textContent = 'OK';
+            okButton.onclick = () => modal.classList.remove('active');
+            modalFooter.appendChild(okButton);
+            
+            modalContent.appendChild(modalHeader);
+            modalContent.appendChild(modalBody);
+            modalContent.appendChild(modalFooter);
+            modal.appendChild(modalContent);
             document.body.appendChild(modal);
         }
         
@@ -906,12 +984,20 @@ class BlogGeneratorUI {
 
     showImageProcessing(imageNumber, message) {
         const preview = document.getElementById(`preview-${imageNumber}`);
-        preview.innerHTML = `
-            <div class="processing-indicator">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>${message}</p>
-            </div>
-        `;
+        preview.innerHTML = '';
+        
+        const processingDiv = document.createElement('div');
+        processingDiv.className = 'processing-indicator';
+        
+        const spinner = document.createElement('i');
+        spinner.className = 'fas fa-spinner fa-spin';
+        
+        const messageP = document.createElement('p');
+        messageP.textContent = message;
+        
+        processingDiv.appendChild(spinner);
+        processingDiv.appendChild(messageP);
+        preview.appendChild(processingDiv);
         preview.classList.add('active');
     }
 
@@ -922,10 +1008,14 @@ class BlogGeneratorUI {
         const preview = document.getElementById(`preview-${imageNumber}`);
         const successMessage = document.createElement('div');
         successMessage.className = 'compression-success';
-        successMessage.innerHTML = `
-            <i class="fas fa-check-circle"></i>
-            <p>圧縮完了: ${originalMB}MB → ${compressedMB}MB (${compressionRatio}%削減)</p>
-        `;
+        const checkIcon = document.createElement('i');
+        checkIcon.className = 'fas fa-check-circle';
+        
+        const messageP = document.createElement('p');
+        messageP.textContent = `圧縮完了: ${originalMB}MB → ${compressedMB}MB (${compressionRatio}%削減)`;
+        
+        successMessage.appendChild(checkIcon);
+        successMessage.appendChild(messageP);
         
         preview.appendChild(successMessage);
         

@@ -22,10 +22,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.setBrowserSyncConfig({
     files: ['_site/**/*'],
     server: {
-      baseDir: '_site',
-      serveStaticOptions: {
-        extensions: ['html']
-      }
+      baseDir: '_site'
     }
   });
 

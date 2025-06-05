@@ -462,6 +462,8 @@ class BlogGeneratorUI {
     }
 
     showPreviewSection() {
+        this.hideLoadingModal();
+        
         const formContainer = document.getElementById('generator-form-container');
         const previewContainer = document.getElementById('preview-container');
         

@@ -353,7 +353,15 @@ class BlogGeneratorUI {
                     throw new Error(`API call failed: ${response.status}`);
                 }
                 
-                const result = await response.json();
+                const responseText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('Failed to parse response as JSON:', responseText);
+                    throw new Error('Invalid JSON response from API');
+                }
+                
                 this.updateProgress(80, '記事を最適化中...');
                 optimizedContent = this.optimizeContent(result.content);
             } else {

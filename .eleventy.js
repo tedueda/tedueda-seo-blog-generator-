@@ -18,6 +18,16 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("blog-generator/**/*.css");
   eleventyConfig.addPassthroughCopy("blog-generator/**/*.js");
   eleventyConfig.addPassthroughCopy("blog-generator/api/**/*.js");
+  
+  eleventyConfig.setBrowserSyncConfig({
+    files: ['_site/**/*'],
+    server: {
+      baseDir: '_site',
+      serveStaticOptions: {
+        extensions: ['html']
+      }
+    }
+  });
 
   // 日付フィルター
   eleventyConfig.addFilter("dateFilter", function(date) {

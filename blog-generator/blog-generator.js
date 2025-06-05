@@ -936,9 +936,3 @@ class BlogGeneratorUI {
         }, 3000);
     }
 }
-
-window.blogGenerator = new BlogGeneratorUI();
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Blog Generator UI initialized');
-});

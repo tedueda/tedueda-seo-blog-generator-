@@ -309,7 +309,7 @@
     <!-- External JavaScript to avoid inline parsing conflicts -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
-        // Simple Blog Generator - Inline Implementation
+        // Ultra-Simple Blog Generator - Conflict-Free Implementation
         var blogState = {
             formData: {},
             generatedContent: null,
@@ -385,44 +385,45 @@
             }
         }
 
+        function buildHtmlTag(tagName, content) {
+            var openTag = String.fromCharCode(60) + tagName + String.fromCharCode(62);
+            var closeTag = String.fromCharCode(60) + String.fromCharCode(47) + tagName + String.fromCharCode(62);
+            return openTag + content + closeTag;
+        }
+
+        function buildListHtml(items) {
+            var listContent = '';
+            for (var i = 0; i < items.length; i++) {
+                listContent += buildHtmlTag('li', items[i]);
+            }
+            return buildHtmlTag('ul', listContent);
+        }
+
         function generateMockContent(keyword, options) {
             return new Promise(function(resolve) {
                 setTimeout(function() {
-                    var contentParts = [
-                        createElement('h2', keyword + 'とは？基礎知識を理解しよう'),
-                        createElement('p', keyword + 'は、現代の映像制作において欠かせない重要な要素です。適切に活用することで、作品のクオリティを大幅に向上させることができます。'),
-                        createElement('h2', '実践的な' + keyword + 'の活用方法'),
-                        createElement('p', '実際の制作現場では、以下のようなポイントに注意して' + keyword + 'を活用します：'),
-                        createList(['基本的な設定と調整方法', '効果的な使用タイミング', 'よくある失敗例とその対策']),
-                        createElement('h2', 'プロが教える' + keyword + 'のコツ'),
-                        createElement('p', '長年の経験から得られた、' + keyword + 'を効果的に活用するためのコツをご紹介します。これらのテクニックを身につけることで、より高品質な作品制作が可能になります。'),
-                        createElement('h2', 'まとめ'),
-                        createElement('p', keyword + 'は正しく理解し活用することで、映像制作の可能性を大きく広げてくれます。今回ご紹介したポイントを参考に、ぜひ実際の制作に活かしてみてください。')
-                    ];
+                    var h2Tag1 = buildHtmlTag('h2', keyword + 'とは？基礎知識を理解しよう');
+                    var p1 = buildHtmlTag('p', keyword + 'は、現代の映像制作において欠かせない重要な要素です。適切に活用することで、作品のクオリティを大幅に向上させることができます。');
+                    var h2Tag2 = buildHtmlTag('h2', '実践的な' + keyword + 'の活用方法');
+                    var p2 = buildHtmlTag('p', '実際の制作現場では、以下のようなポイントに注意して' + keyword + 'を活用します：');
+                    var listHtml = buildListHtml(['基本的な設定と調整方法', '効果的な使用タイミング', 'よくある失敗例とその対策']);
+                    var h2Tag3 = buildHtmlTag('h2', 'プロが教える' + keyword + 'のコツ');
+                    var p3 = buildHtmlTag('p', '長年の経験から得られた、' + keyword + 'を効果的に活用するためのコツをご紹介します。これらのテクニックを身につけることで、より高品質な作品制作が可能になります。');
+                    var h2Tag4 = buildHtmlTag('h2', 'まとめ');
+                    var p4 = buildHtmlTag('p', keyword + 'は正しく理解し活用することで、映像制作の可能性を大きく広げてくれます。今回ご紹介したポイントを参考に、ぜひ実際の制作に活かしてみてください。');
                     
-                    var content = contentParts.join('');
+                    var fullContent = h2Tag1 + p1 + h2Tag2 + p2 + listHtml + h2Tag3 + p3 + h2Tag4 + p4;
                     
                     resolve({
                         title: keyword + 'の完全ガイド：プロが教える実践的な活用法',
                         excerpt: keyword + 'について、基礎から応用まで詳しく解説します。実際の現場で使える実践的なテクニックとコツをプロの視点からお伝えします。',
-                        content: content,
+                        content: fullContent,
                         meta_description: keyword + 'の基礎から応用まで、プロの視点から詳しく解説。実践的なテクニックとコツで作品のクオリティを向上させましょう。',
                         keywords: [keyword, '映像制作', '技術', 'プロ', 'ガイド'],
                         seo_score: 85
                     });
                 }, 1000);
             });
-        }
-
-        function createElement(tag, content) {
-            return String.fromCharCode(60) + tag + String.fromCharCode(62) + content + String.fromCharCode(60) + '/' + tag + String.fromCharCode(62);
-        }
-
-        function createList(items) {
-            var listItems = items.map(function(item) {
-                return createElement('li', item);
-            }).join('');
-            return createElement('ul', listItems);
         }
 
         function generateContent() {

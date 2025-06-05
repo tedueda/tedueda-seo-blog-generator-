@@ -28,7 +28,11 @@ function generateContent() {
                 var keyword = document.getElementById('main-keyword').value || 'ライブ配信';
                 var h2Text = keyword + 'とは';
                 var pText = keyword + 'について詳しく解説します。';
-                var contentHtml = '<h2>' + h2Text + '</h2><p>' + pText + '</p>';
+                var h2Element = document.createElement('h2');
+                h2Element.textContent = h2Text;
+                var pElement = document.createElement('p');
+                pElement.textContent = pText;
+                var contentHtml = h2Element.outerHTML + pElement.outerHTML;
                 resolve({
                     title: keyword + 'の完全ガイド',
                     content: contentHtml,

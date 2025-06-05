@@ -388,15 +388,19 @@
         function generateMockContent(keyword, options) {
             return new Promise(function(resolve) {
                 setTimeout(function() {
-                    var content = '<h2>' + keyword + 'とは？基礎知識を理解しよう</h2>' +
-                        '<p>' + keyword + 'は、現代の映像制作において欠かせない重要な要素です。適切に活用することで、作品のクオリティを大幅に向上させることができます。</p>' +
-                        '<h2>実践的な' + keyword + 'の活用方法</h2>' +
-                        '<p>実際の制作現場では、以下のようなポイントに注意して' + keyword + 'を活用します：</p>' +
-                        '<ul><li>基本的な設定と調整方法</li><li>効果的な使用タイミング</li><li>よくある失敗例とその対策</li></ul>' +
-                        '<h2>プロが教える' + keyword + 'のコツ</h2>' +
-                        '<p>長年の経験から得られた、' + keyword + 'を効果的に活用するためのコツをご紹介します。これらのテクニックを身につけることで、より高品質な作品制作が可能になります。</p>' +
-                        '<h2>まとめ</h2>' +
-                        '<p>' + keyword + 'は正しく理解し活用することで、映像制作の可能性を大きく広げてくれます。今回ご紹介したポイントを参考に、ぜひ実際の制作に活かしてみてください。</p>';
+                    var contentParts = [
+                        createElement('h2', keyword + 'とは？基礎知識を理解しよう'),
+                        createElement('p', keyword + 'は、現代の映像制作において欠かせない重要な要素です。適切に活用することで、作品のクオリティを大幅に向上させることができます。'),
+                        createElement('h2', '実践的な' + keyword + 'の活用方法'),
+                        createElement('p', '実際の制作現場では、以下のようなポイントに注意して' + keyword + 'を活用します：'),
+                        createList(['基本的な設定と調整方法', '効果的な使用タイミング', 'よくある失敗例とその対策']),
+                        createElement('h2', 'プロが教える' + keyword + 'のコツ'),
+                        createElement('p', '長年の経験から得られた、' + keyword + 'を効果的に活用するためのコツをご紹介します。これらのテクニックを身につけることで、より高品質な作品制作が可能になります。'),
+                        createElement('h2', 'まとめ'),
+                        createElement('p', keyword + 'は正しく理解し活用することで、映像制作の可能性を大きく広げてくれます。今回ご紹介したポイントを参考に、ぜひ実際の制作に活かしてみてください。')
+                    ];
+                    
+                    var content = contentParts.join('');
                     
                     resolve({
                         title: keyword + 'の完全ガイド：プロが教える実践的な活用法',
@@ -408,6 +412,17 @@
                     });
                 }, 1000);
             });
+        }
+
+        function createElement(tag, content) {
+            return String.fromCharCode(60) + tag + String.fromCharCode(62) + content + String.fromCharCode(60) + '/' + tag + String.fromCharCode(62);
+        }
+
+        function createList(items) {
+            var listItems = items.map(function(item) {
+                return createElement('li', item);
+            }).join('');
+            return createElement('ul', listItems);
         }
 
         function generateContent() {

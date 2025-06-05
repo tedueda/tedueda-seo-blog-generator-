@@ -477,7 +477,7 @@
 
         // Form handling
         function validateForm() {
-            var keyword = document.getElementById('keyword');
+            var keyword = document.getElementById('main-keyword');
             if (!keyword || !keyword.value.trim()) {
                 alert('メインキーワードを入力してください。');
                 return false;
@@ -488,8 +488,8 @@
         function collectFormData() {
             blogState.formData = {
                 referenceUrl: document.getElementById('reference-url') ? document.getElementById('reference-url').value : '',
-                targetKeyword: document.getElementById('target-keyword') ? document.getElementById('target-keyword').value : '',
-                keyword: document.getElementById('keyword') ? document.getElementById('keyword').value : '',
+                targetAudience: document.getElementById('target-audience') ? document.getElementById('target-audience').value : '',
+                keyword: document.getElementById('main-keyword') ? document.getElementById('main-keyword').value : '',
                 wordCount: document.getElementById('word-count') ? document.getElementById('word-count').value : '1500',
                 category: document.getElementById('category') ? document.getElementById('category').value : '技術情報'
             };
@@ -672,7 +672,7 @@
 
         // Event binding
         function bindEvents() {
-            var form = document.getElementById('blog-form');
+            var form = document.getElementById('blog-generator-form');
             if (form) {
                 form.addEventListener('submit', handleFormSubmit);
             }

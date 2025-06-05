@@ -252,6 +252,70 @@
         </div>
     </main>
 
+    <!-- 公開確認モーダル -->
+    <div id="publish-modal" class="modal">
+        <div class="modal-content">
+            <div class="publish-container">
+                <div class="publish-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>記事を公開しますか？</h3>
+                <p>この記事をブログに公開します。公開後は編集できません。</p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-publish">
+                        キャンセル
+                    </button>
+                    <button type="button" class="btn btn-primary" id="confirm-publish">
+                        <i class="fas fa-check"></i>
+                        公開する
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公開完了モーダル -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="success-container">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>記事が公開されました！</h3>
+                <p>記事が正常に公開されました。</p>
+                <div class="published-url">
+                    <label>公開URL:</label>
+                    <div class="url-container">
+                        <input type="text" id="published-url" readonly>
+                        <button type="button" class="btn btn-secondary" id="copy-url">
+                            <i class="fas fa-copy"></i>
+                            コピー
+                        </button>
+                    </div>
+                </div>
+                <div class="share-buttons">
+                    <button type="button" class="btn btn-social twitter" id="share-twitter">
+                        <i class="fab fa-twitter"></i>
+                        Twitter
+                    </button>
+                    <button type="button" class="btn btn-social facebook" id="share-facebook">
+                        <i class="fab fa-facebook"></i>
+                        Facebook
+                    </button>
+                    <button type="button" class="btn btn-social linkedin" id="share-linkedin">
+                        <i class="fab fa-linkedin"></i>
+                        LinkedIn
+                    </button>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-primary" id="close-success">
+                        閉じる
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Loading Modal -->
     <div id="loading-modal" class="modal">
         <div class="modal-content">
